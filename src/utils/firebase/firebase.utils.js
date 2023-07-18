@@ -1,7 +1,6 @@
 import {initializeApp} from 'firebase/app';
-import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth'
 import {getFirestore, doc, getDoc, setDoc} from 'firebase/firestore';
-import {findRenderedComponentWithType} from "react-dom/test-utils";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -23,7 +22,6 @@ googleAuthProvider.setCustomParameters({
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleAuthProvider);
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleAuthProvider);
 
 export const db = getFirestore();
 
@@ -48,6 +46,9 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo={}) =>
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
     if (!email || !password) return;
-
     return await createUserWithEmailAndPassword(auth, email, password);
+};
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) return;
+    return await signInWithEmailAndPassword(auth, email, password);
 };
