@@ -1,5 +1,13 @@
 import {initializeApp} from 'firebase/app';
-import {getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import {
+    getAuth,
+    signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+} from 'firebase/auth'
 import {getFirestore, doc, getDoc, setDoc} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -25,8 +33,8 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleAuthProvi
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth, additionalInfo={}) => {
-    if(!userAuth) return;
+export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) => {
+    if (!userAuth) return;
 
     const userDocRef = doc(db, 'users', userAuth.uid);
     const userSnapshot = await getDoc(userDocRef);
@@ -36,11 +44,12 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo={}) =>
         const createdAt = new Date();
 
         try {
-            await setDoc(userDocRef, {displayName, email, createdAt,  ...additionalInfo});
+            await setDoc(userDocRef, {displayName, email, createdAt, ...additionalInfo});
         } catch (error) {
             console.log('Error creating the user', error.message);
         }
-    };
+    }
+    ;
     return userDocRef;
 };
 
@@ -55,3 +64,12 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 };
 
 export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) => {
+    if (callback != null)
+        return onAuthStateChanged(auth, callback);
+    else {
+        console.log("Callback inside onAuthStateChangedListener (firebase.utils.js) should not be null")
+        return null;
+    }
+}
