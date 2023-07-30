@@ -4,7 +4,7 @@ import Authentication from "./routes/authentication/authentication.component";
 import Navigation from "./components/navigation/navigation.component";
 import Shop from "./components/shop/shop.component";
 
-//114
+//119
 
 const App = () => {
 
